@@ -9,8 +9,19 @@
     <img src="./assets/logo.png" class="logo" />
   </div>
 
-  <Container v-bind:post_inform="post_inform" />
+  <Container
+    v-bind:post_inform="post_inform"
+    v-bind:tab_state="tab_state"
+    @tabChange="tab_state = $event"
+  />
   <button @click="morePost">더보기</button>
+
+  <!-- tab 연습 :  <div v-if="tab_state == 1">내용1</div>
+  <div v-if="tab_state == 2">내용2</div>
+  <div v-if="tab_state == 3">내용3</div>
+  <button @click="tab_state = 1">버튼1</button>
+  <button @click="tab_state = 2">버튼2</button>
+  <button @click="tab_state = 3">버튼3</button> -->
 
   <div class="footer">
     <ul class="footer-button-plus">
@@ -32,6 +43,7 @@ export default {
     return {
       post_inform: post_ref,
       click_num: 0,
+      tab_state: 0, // App.vue에서도 조작할 가능성이 있으므로 이럴때는 그냥 App.vue에 둔다
     };
   },
   components: {
@@ -114,4 +126,12 @@ export default {
      >>머 마찬가지로 put(), delete()가 있겠지 사용방법은 필요할때 찾아보자 일단 지금 angular로 더 해야하고....ㅠ
 
      vue는 프론트엔드 프레임워크 라이브러리 >> 웹 프론트엔드의 목표는 DB에서 송수신해 백엔드 서버에서 처리한 데이터를 클라이언트 환경에 송수신해 보여주는것 >> 데이터 중심적으로 개발하자
+-->
+
+<!-- 5/7 : Tab UI 제작 : 각각의 버튼을 누르면 해당 div의 내용물을 보여주는 것
+     
+     > UI 만들기는 언제나 state 데이터 만들고 / 상태에 따라 HTML이 어떻게 보일지
+
+     > 앞으로 만들 이미지 업록드 페이지 (이미지 필터 입히기 + 글 입력) 등 페이지 나눌때 필요
+     > 페이지를 나눌때 1. vue-router 2.tab UI 등 상황에 따라 간결하고 효율적인걸 고르면 됨 
 -->
