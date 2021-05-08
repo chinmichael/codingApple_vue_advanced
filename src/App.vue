@@ -12,7 +12,8 @@
   <Container
     v-bind:post_inform="post_inform"
     v-bind:tab_state="tab_state"
-    @tabChange="tab_state = $event"
+    v-bind:img_url="upload_img"
+    @tab_change="tab_state = $event"
   />
   <button @click="morePost">더보기</button>
 
@@ -25,7 +26,13 @@
 
   <div class="footer">
     <ul class="footer-button-plus">
-      <input type="file" id="file" class="inputfile" />
+      <input
+        @change="upload"
+        type="file"
+        id="file"
+        class="inputfile"
+        accept="image/*"
+      />
       <label for="file" class="input-plus">+</label>
     </ul>
   </div>
@@ -44,6 +51,7 @@ export default {
       post_inform: post_ref,
       click_num: 0,
       tab_state: 0, // App.vue에서도 조작할 가능성이 있으므로 이럴때는 그냥 App.vue에 둔다
+      upload_img: "",
     };
   },
   components: {
@@ -79,6 +87,18 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+    },
+
+    upload(e) {
+      //e는 event관련 유용한 함수가 담긴 자료변수
+      let file = e.target.files; // input을 통해 가져온 파일들
+      console.log(file[0]); // 위에서처럼 files기에 리스트로 담기는걸 알 수 있음 >> 부분처리를 위해서 [i] indexing처리를 한다(그럼 file 정보로 딱 뜸)
+
+      //업로드 뒤엔 이미지 처리화면으로 넘어가 업로드한 이미지를 띄워야함 >> 위에서 한 tab_state이용 (이래서 상위에 data세팅한것)
+      let imgUrl = URL.createObjectURL(file[0]);
+      console.log(imgUrl);
+      this.tab_state = 1; // 처리화면 전환
+      this.upload_img = imgUrl;
     },
   },
 };
@@ -134,4 +154,26 @@ export default {
 
      > 앞으로 만들 이미지 업록드 페이지 (이미지 필터 입히기 + 글 입력) 등 페이지 나눌때 필요
      > 페이지를 나눌때 1. vue-router 2.tab UI 등 상황에 따라 간결하고 효율적인걸 고르면 됨 
+-->
+
+<!-- 5/8 : 이미지 업로드(서버 없을때), 글 발행(까지 하려고 했는데 개인적으로 한 emit warning에 카오스여서 처리하다 시간 다 갔넼ㅋㅋ (결국 질문 올림))
+     >> 실질적으로는 웹브라우저 기능인데 어차피 vue는 브라우저를 다루는걸 도와주는 도구다
+
+     파일 업로드를 위한 HTML >> input type="file" >> 파일 업로드 버튼은 뭐 수정이 안되는지라 보통 숨기고 라벨 태그를 꾸며서 처리함
+
+     파일은 업로드 한 뒤에는 서버에 우선 보내서 저장뒤 다시 저장한 url을 보내어 img태그를 이용
+     >>explorer11 이상 브라우저에서는 이미지를 다루는 함수를 이용해 서버를 보내기 전에 처리를 할 수 있음
+        >> FileReader() 혹은 URL.createObjectURL()
+      
+      >> 참고로 여러개 동시에 입력할때 type을 multiple type으로 가면 동시에 여러개 입력(shift) 가능
+      >> 이미지만 선택 가능하게 바꾸려면 accept="image/*" 속성으로 근데 정확히는 보이는것만 바뀌는거라 예전에 한것처럼 js로 유효성 검사를 써야함(.type()사용 >> image/가 들어가는지)
+
+     @change="" : vue에서 input시(input의 데이터 변경시) 코드를 실행하기위한 바인딩
+
+     FileReader API : 파일을 텍스트로 변환처리 >> 그래서 img src에 넣을 수 있음
+
+     createObjectURL() : 서버없이 이미지의 가상 URL을 호스팅하는것처럼 해줌(임시니까 새로고침하면 사라짐)
+
+     blob(binary large object) : (image 업로드하면 blob으로 링크가 되어있을것)
+     >> 컴퓨터 안 모든 파일은 binary 데이터(0,1로 구성) >> 브라우저에서 img를 다룰때 BLOB Object에 담아 처리 >> 이미지 여러 조작 가능(확장자 변경 등도)
 -->

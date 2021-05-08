@@ -1,8 +1,8 @@
 <template>
   <div>
-    <button @click="$emit('tabChange', 0)">포스팅</button>
-    <button @click="$emit('tabChange', 1)">이미지 필터적용</button>
-    <button @click="$emit('tabChange', 2)">상세글 작성</button>
+    <button @click="$emit('tab_change', 0)">포스팅</button>
+    <button @click="$emit('tab_change', 1)">이미지 필터적용</button>
+    <button @click="$emit('tab_change', 2)">상세글 작성</button>
 
     <div v-if="tab_state == 0">
       <Post
@@ -15,7 +15,11 @@
   <!--안좋은 관습이기에 v-if와 v-for을 한 태그안에 다 넣지 못함-->
 
   <!--필터 선택 페이지-->
-  <div class="upload-image" v-if="tab_state == 1 || tab_state == 2"></div>
+  <div
+    class="upload-image"
+    :style="{ backgroundImage: `url(${img_url})` }"
+    v-if="tab_state == 1 || tab_state == 2"
+  ></div>
   <div class="filters" v-if="tab_state == 1">
     <div class="filter-1"></div>
     <div class="filter-1"></div>
@@ -39,6 +43,7 @@ export default {
   props: {
     post_inform: Array,
     tab_state: Number,
+    img_url: String,
   },
   components: {
     Post: Post,
