@@ -4,17 +4,19 @@
       <li>Cancel</li>
     </ul>
     <ul class="header-button-right">
-      <li>Next</li>
+      <li v-if="tab_state == 1" @click="tab_state++">Next</li>
+      <li v-if="tab_state == 2" @click="publish">Post</li>
     </ul>
     <img src="./assets/logo.png" class="logo" />
   </div>
-
   <Container
     v-bind:post_inform="post_inform"
     v-bind:tab_state="tab_state"
     v-bind:img_url="upload_img"
-    @tab_change="tab_state = $event"
+    @text_change="post_content = $event"
   />
+  <!-- @tab_change="tab_state = $event"
+  /> -->
   <button @click="morePost">더보기</button>
 
   <!-- tab 연습 :  <div v-if="tab_state == 1">내용1</div>
@@ -52,6 +54,7 @@ export default {
       click_num: 0,
       tab_state: 0, // App.vue에서도 조작할 가능성이 있으므로 이럴때는 그냥 App.vue에 둔다
       upload_img: "",
+      post_content: "",
     };
   },
   components: {
@@ -95,10 +98,29 @@ export default {
       console.log(file[0]); // 위에서처럼 files기에 리스트로 담기는걸 알 수 있음 >> 부분처리를 위해서 [i] indexing처리를 한다(그럼 file 정보로 딱 뜸)
 
       //업로드 뒤엔 이미지 처리화면으로 넘어가 업로드한 이미지를 띄워야함 >> 위에서 한 tab_state이용 (이래서 상위에 data세팅한것)
-      let imgUrl = URL.createObjectURL(file[0]);
+      let imgUrl = URL.createObjectURL(file[0]); // 참조 링크 삭제는 URL.revokeObjectURL();
       console.log(imgUrl);
       this.tab_state = 1; // 처리화면 전환
       this.upload_img = imgUrl;
+
+      e.target.value = "";
+      // @change는 변경시 처리되는거라 같은 이미지를 연속 올릴경우 인식을 못하니 초기화 시켜야함
+      // 근데 e.target.files=""를 하면 당빠 타입 에러가 발생하므로 e.target.value로 초기화시켜주자
+    },
+
+    publish() {
+      let addPost = {
+        name: "Kim Hyun",
+        userImage: "https://placeimg.com/100/100/arch",
+        postImage: this.upload_img,
+        likes: 36,
+        date: "May 15",
+        liked: false,
+        content: this.post_content,
+        filter: "perpetua",
+      };
+      this.post_inform.unshift(addPost); // unshift() : Array에 자료를 '맨 앞에' 추가로 집어넣을때
+      this.tab_state = 0;
     },
   },
 };
