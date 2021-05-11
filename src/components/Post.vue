@@ -5,11 +5,12 @@
         class="profile"
         :stlye="{ backgroundImage: 'url(' + post_data.postImage + ')' }"
       ></div>
+      <!--v-bind:style="" 안에는 일종의 js문법 공간 따라서 변수 + 문자열은 변수 + '문자열'처리-->
       <span class="profile-name">{{ post_data.name }}</span>
     </div>
 
     <div
-      class="post-body"
+      :class="`post-body ${post_data.filter}`"
       :style="{ backgroundImage: `url(${post_data.postImage})` }"
     ></div>
     <!--'가 아니라 `임을 주의-->

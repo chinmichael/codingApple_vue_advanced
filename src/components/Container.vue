@@ -19,6 +19,7 @@
     <!--필터 선택 페이지-->
     <div
       class="upload-image"
+      :class="filter_name"
       :style="`background-image:url(${img_url})`"
       v-if="tab_state == 1 || tab_state == 2"
     ></div>
@@ -33,7 +34,9 @@
         :key="i"
         v-bind:filter="a"
         v-bind:img_url="img_url"
-      ></FilterBox>
+      >
+        {{ a }}
+      </FilterBox>
     </div>
 
     <!--글 작성 페이지-->
@@ -88,6 +91,7 @@ export default {
     post_inform: Array,
     tab_state: Number,
     img_url: String,
+    filter_name: String,
   },
   components: {
     Post: Post,

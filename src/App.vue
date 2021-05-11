@@ -13,6 +13,7 @@
     v-bind:post_inform="post_inform"
     v-bind:tab_state="tab_state"
     v-bind:img_url="upload_img"
+    v-bind:filter_name="post_filter"
     @text_change="post_content = $event"
   />
   <!-- @tab_change="tab_state = $event"
@@ -55,7 +56,13 @@ export default {
       tab_state: 0, // App.vue에서도 조작할 가능성이 있으므로 이럴때는 그냥 App.vue에 둔다
       upload_img: "",
       post_content: "",
+      post_filter: "",
     };
+  },
+  mounted() {
+    this.emitter.on("filtering", (e) => {
+      this.post_filter = e;
+    });
   },
   components: {
     Container: Container,
@@ -117,10 +124,11 @@ export default {
         date: "May 15",
         liked: false,
         content: this.post_content,
-        filter: "perpetua",
+        filter: this.post_filter,
       };
       this.post_inform.unshift(addPost); // unshift() : Array에 자료를 '맨 앞에' 추가로 집어넣을때
       this.tab_state = 0;
+      this.post_filter = "";
     },
   },
 };
