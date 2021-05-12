@@ -12,11 +12,12 @@
     <div
       :class="`post-body ${post_data.filter}`"
       :style="{ backgroundImage: `url(${post_data.postImage})` }"
+      @click="$store.commit('likeCheck', num)"
     ></div>
     <!--'가 아니라 `임을 주의-->
 
     <div class="post-content">
-      <p>{{ post_data.likes }} Likes</p>
+      <p>{{ $store.state.post_inform[num].likes }} Likes</p>
       <p>
         <strong>{{ post_data.name }}</strong> {{ post_data.content }}
       </p>
@@ -30,6 +31,7 @@ export default {
   name: "Post",
   props: {
     post_data: Object,
+    num: Number,
   },
 };
 </script>

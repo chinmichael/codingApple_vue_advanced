@@ -9,6 +9,11 @@
     </ul>
     <img src="./assets/logo.png" class="logo" />
   </div>
+
+  <div>
+    <h4>{{ $store.state.name + " " + $store.state.age }}</h4>
+    <button @click="$store.commit('changeAge', 10)">Vuex연습</button>
+  </div>
   <Container
     v-bind:post_inform="post_inform"
     v-bind:tab_state="tab_state"
@@ -206,4 +211,32 @@ export default {
 
      blob(binary large object) : (image 업로드하면 blob으로 링크가 되어있을것)
      >> 컴퓨터 안 모든 파일은 binary 데이터(0,1로 구성) >> 브라우저에서 img를 다룰때 BLOB Object에 담아 처리 >> 이미지 여러 조작 가능(확장자 변경 등도)
+-->
+
+<!--  5/12 : Vuex 1
+
+      기존 데이터 주고받기가 어려움 : 하위컴포넌트 전송은 props / 상위로는 custom event나 mitt >> 코드가 길어지고 복잡해지면 유지관리가 힘듦
+
+      Vuex : 모든 컴포넌트의 데이터 공유를 위한 라이브러리
+
+      >> 마냥 좋지는 않음 : 간단한 기능에도 코드가 좀 길어짐 (컴포넌트가 많아지면 Vuex 쓰는게 좋음)
+
+      설치는 vue문서에 해당 vue버전으로 설치법 확인
+      vue3기준 : vuex4 설치 : npm install vuex@next
+
+      >> 이후 src에 데이터 저장관리용 js파일 생성 (관습적으로 store.js 작명)
+
+      >> store.js 기본 세팅 후 main.js에 등록
+
+      >> store의 state를 꺼내쓰는 방법
+         {{ $store.state.데이터변수명 }} $store는 store의 모든 state(data) 가져올 수 있음 (함수등에서 쓰려면 mitt때처럼 this.$store.state.데이터변수명 으로 가면 됨)
+
+         state 변경하는 방법 그냥 위에서처럼 $store.state.데이터변수명으로 가져와서 변경하면 됨 >> 근데 이렇게 하면 안됨 (Vuex의 원칙)
+
+         >> state 변경을 컴포넌트에서 직접수정하면 추적이 매우 힘들어짐 (예를들어 수정한 곳 하나에서 문제터짐 모든 컴포넌트 조사해야할 수 있음)
+
+         >> 따라서 Vuex state수정을 위해서는 
+            1. 미리 store에 수정방법을(메서드) 정의해두고
+            2. 이를 컴포넌트에서 호출하여 수정해야한다 (미리 유사 api를 정의하고 수정한다고 생각)
+
 -->

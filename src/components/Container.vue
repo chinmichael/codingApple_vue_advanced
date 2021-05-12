@@ -9,6 +9,7 @@
         v-for="(a, i) in post_inform"
         :key="i"
         v-bind:post_data="post_inform[i]"
+        v-bind:num="i"
       />
     </div>
 
@@ -91,7 +92,7 @@ export default {
     post_inform: Array,
     tab_state: Number,
     img_url: String,
-    filter_name: String,
+    filter_name: String, // mitt으로 여기도 데이터 복사해도 되지만 복사본을 굳이 여러개 만들면 관리가 힘드므로 걍 App.vue에서 props함
   },
   components: {
     Post: Post,
