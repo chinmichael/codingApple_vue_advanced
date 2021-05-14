@@ -10,8 +10,16 @@
     <img src="./assets/logo.png" class="logo" />
   </div>
 
+  <p>{{ $store.state.morePost }}</p>
+  <button @click="$store.dispatch('getData')">store더보기</button>
+
+  <p>카운트 : {{ cnt }} now1 : {{ now1() }} vs now2 : {{ now2 }}</p>
+  <button @click="cnt++">computed비교 버튼</button>
+  <!--버튼 누를때마다 cnt가 변경됨 > 재랜더링 > now1재실행, 컴퓨티드 함수는 소괄호 붙이면 안됨-->
+
   <div>
-    <h4>{{ $store.state.name + " " + $store.state.age }}</h4>
+    <h4>{{ name + " " + $store.state.age }}</h4>
+    <!--name은 하단에 computed에 저장된 state-->
     <button @click="$store.commit('changeAge', 10)">Vuex연습</button>
   </div>
   <Container
@@ -51,6 +59,7 @@ import Container from "./components/Container.vue";
 import { post_ref } from "./assets/post_ref.js"; //항상 default아닐때는 {} 바인딩 잊지마!!
 
 import axios from "axios"; //Ajax 요청할 곳에
+import { mapState } from "vuex";
 
 export default {
   name: "App",
@@ -62,6 +71,7 @@ export default {
       upload_img: "",
       post_content: "",
       post_filter: "",
+      cnt: 0,
     };
   },
   mounted() {
@@ -135,6 +145,19 @@ export default {
       this.tab_state = 0;
       this.post_filter = "";
     },
+
+    now1() {
+      return new Date();
+    },
+  },
+  computed: {
+    now2() {
+      return new Date();
+    },
+    // name() {
+    //   return this.$store.state.name;
+    // },
+    ...mapState(["name"]),
   },
 };
 </script>
